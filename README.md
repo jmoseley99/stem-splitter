@@ -28,7 +28,22 @@ already own will always give the best separation results.
   Expect a few minutes per song on CPU. The first run also downloads the model
   weights (a few hundred MB), one time.
 
-## Setup
+## Quick start (recommended)
+
+On a fresh machine, run the setup script once from the project root in PowerShell.
+It installs FFmpeg, creates the virtual environment, and installs all dependencies
+in the correct order:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+```
+
+After that, just **double-click `run.bat`** to launch the app (it opens in your
+browser at http://localhost:8501). That's it.
+
+The manual steps below do the same thing by hand if you'd rather not use the scripts.
+
+## Manual setup
 
 Run these from the project root in PowerShell.
 
@@ -75,11 +90,13 @@ python -c "import demucs, torch, streamlit, soundfile, numpy; print('ok')"
 
 ## Run
 
+Double-click **`run.bat`**, or from an activated venv:
+
 ```powershell
 streamlit run app.py
 ```
 
-This opens the app in your browser (usually http://localhost:8501).
+Either way it opens in your browser (usually http://localhost:8501).
 
 ## How to use
 
