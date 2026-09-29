@@ -1,0 +1,32 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Demucs model weights cache
+models/
+*.th
+
+# Uploaded / separated / exported audio (runtime working dirs)
+data/
+separated/
+output/
+*.mp3
+*.wav
+!samples/*.mp3
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Internal build brief — not for the public repo
+stem-splitter-handoff.md

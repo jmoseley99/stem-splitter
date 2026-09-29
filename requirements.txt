@@ -1,0 +1,40 @@
+# Stem Splitter — pinned, verified for Python 3.12.5 on Windows (CPU)
+#
+# IMPORTANT: PyTorch CPU wheels come from the PyTorch index, not PyPI.
+# Install with:
+#   pip install torch==2.2.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+#
+# (See README.md for the full, ordered install steps.)
+
+# --- Core separation engine ---
+demucs==4.0.1
+
+# --- Torch stack (installed separately from the PyTorch CPU index; listed here for reference) ---
+torch==2.2.2
+torchaudio==2.2.2
+
+# --- UI ---
+streamlit==1.38.0
+
+# --- Audio I/O ---
+soundfile==0.12.1
+
+# --- YouTube audio download (uses FFmpeg to extract MP3) ---
+yt-dlp==2025.9.26
+
+# --- Use the OS certificate store for TLS, so yt-dlp works behind a
+#     TLS-inspecting proxy / corporate network (Windows cert store) ---
+truststore==0.10.4
+
+# --- Tempo / beat detection for the count-in feature ---
+librosa==0.10.2.post1
+# librosa pulls in numba/scipy/scikit-learn; these are pinned to versions that
+# still support numpy 1.x (newer ones require numpy 2.x and break the torch stack).
+numba==0.60.0
+llvmlite==0.43.0
+scipy==1.13.1
+scikit-learn==1.5.2
+
+# --- Pinned to avoid the numpy 2.x break with the demucs/soundfile stack ---
+numpy==1.26.4
