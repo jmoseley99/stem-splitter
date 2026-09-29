@@ -512,10 +512,6 @@ st.caption(
     "adjust each level, and export a new mix."
 )
 
-device = pick_device()
-st.info(f"Compute device: **{device.upper()}**"
-        + ("" if device == "cuda" else "  ·  CPU separation takes a few minutes per song."))
-
 # Two ways to provide a song: upload a file, or paste a YouTube link.
 raw: bytes | None = None
 display_name: str | None = None

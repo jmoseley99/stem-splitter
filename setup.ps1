@@ -78,6 +78,4 @@ Write-Host "`n[5/5] Verifying installation..." -ForegroundColor Yellow
 & $venvPython -c "import demucs, torch, streamlit, soundfile, numpy, librosa, yt_dlp, truststore; print('All imports OK  -  torch', torch.__version__, '| numpy', numpy.__version__)"
 
 Write-Host "`n=== Setup complete ===" -ForegroundColor Green
-Write-Host "Start the app by double-clicking run.bat, or run:" -ForegroundColor Green
-Write-Host "    streamlit run app.py" -ForegroundColor Green
 Write-Host "(The first stem separation downloads the Demucs model once - a one-time delay.)"
