@@ -114,6 +114,33 @@ def pick_device() -> str:
     return "cuda" if torch.cuda.is_available() else "cpu"
 
 
+def cleanup_cache(keep_key: str | None = None) -> None:
+    """
+    Remove cached working files to keep the project tidy.
+
+    - Deletes all exported mixes in output/ (we only ever want the latest).
+    - Deletes source files (data/) and separated stems (separated/) that belong
+      to *other* songs, but keeps the current song's (`keep_key`) so re-mixing at
+      new levels stays instant instead of re-running Demucs.
+    """
+    # Old exported mixes: always safe to clear.
+    for f in OUTPUT_DIR.glob("*"):
+        if f.is_file():
+            f.unlink(missing_ok=True)
+
+    # Source files from other songs.
+    for f in DATA_DIR.glob("*"):
+        if f.is_file() and (keep_key is None or f.stem != keep_key):
+            f.unlink(missing_ok=True)
+
+    # Separated stem folders from other songs.
+    stem_root = SEPARATED_DIR / MODEL_NAME
+    if stem_root.exists():
+        for d in stem_root.iterdir():
+            if d.is_dir() and (keep_key is None or d.name != keep_key):
+                shutil.rmtree(d, ignore_errors=True)
+
+
 @st.cache_data(show_spinner=False)
 def download_youtube_audio(url: str) -> tuple[bytes, str]:
     """
@@ -169,7 +196,10 @@ def separate_stems(raw: bytes, key: str) -> dict[str, str]:
     Cached by (raw bytes, key) so re-running with the same file is instant.
     The heavy Demucs run happens exactly once per unique file.
     """
-    input_path = DATA_DIR / f"{key}.mp3"
+    # Written as .wav because the bytes may be WAV (YouTube path) or MP3 (upload);
+    # FFmpeg/Demucs sniff the real format from the content, so a container-neutral
+    # name is fine and avoids a misleading extension.
+    input_path = DATA_DIR / f"{key}.wav"
     input_path.write_bytes(raw)
 
     device = pick_device()
@@ -685,6 +715,10 @@ if raw is not None:
         preview_key = f"preview_{key}"
 
         if st.button("Build / preview mix", type="primary"):
+            # Each build is a fresh version, so clear old exported mixes and any
+            # leftover files from other songs. The current song's stems are kept
+            # so re-mixing stays instant.
+            cleanup_cache(keep_key=key)
             with st.spinner("Mixing and encoding…"):
                 try:
                     audio, sr = mix_stems(
