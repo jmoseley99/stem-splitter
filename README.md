@@ -8,6 +8,21 @@ levels, and exports the result as a new MP3.
 Provide a song either by **uploading an MP3** or by **pasting a YouTube link** — the app
 downloads the audio for you (via yt-dlp + FFmpeg), so there's no need to convert it first.
 
+## Get it running (simple version)
+
+No git or command line needed:
+
+1. On this GitHub page, click the green **`< > Code`** button, then **Download ZIP**.
+2. Find the downloaded ZIP, right-click it, and choose **Extract All**.
+3. Open the extracted folder. If you don't have Python yet, install it first from
+   [python.org/downloads](https://www.python.org/downloads/) and **tick "Add python.exe to
+   PATH"** on the first screen of the installer.
+4. Double-click **`setup.bat`** and wait for it to finish (a few minutes, one time only).
+   Click "More info → Run anyway" if Windows SmartScreen warns about the file.
+5. Double-click **`run.bat`**. The app opens in your web browser.
+
+That's it. To use it again later, just double-click `run.bat`.
+
 **A note on YouTube audio quality:** YouTube only serves lossy audio (Opus at roughly
 130-160 kbps, or AAC around 128 kbps). There is no 320 kbps MP3 or lossless source to
 download, so that is the real quality ceiling. To avoid degrading it further, the app grabs

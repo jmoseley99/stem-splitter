@@ -22,7 +22,12 @@ if (Get-Command py -ErrorAction SilentlyContinue) {
 } elseif (Get-Command python -ErrorAction SilentlyContinue) {
     $pythonCmd = "python"
 } else {
-    Write-Host "Python was not found. Install Python 3.12 from https://www.python.org/downloads/ (tick 'Add to PATH'), then re-run this script." -ForegroundColor Red
+    Write-Host "Python was not found." -ForegroundColor Red
+    Write-Host "Please install Python 3.12 first:" -ForegroundColor Red
+    Write-Host "  1. Go to https://www.python.org/downloads/" -ForegroundColor Red
+    Write-Host "  2. Download and run the installer" -ForegroundColor Red
+    Write-Host "  3. IMPORTANT: tick 'Add python.exe to PATH' on the first screen" -ForegroundColor Red
+    Write-Host "  4. After it installs, run this setup again." -ForegroundColor Red
     exit 1
 }
 & $pythonCmd --version
@@ -37,7 +42,11 @@ if ($ffmpegOnPath -or (Test-Path $wingetFfmpeg)) {
     if (Get-Command winget -ErrorAction SilentlyContinue) {
         Write-Host "Installing FFmpeg via winget..."
         winget install Gyan.FFmpeg --accept-source-agreements --accept-package-agreements
-        Write-Host "FFmpeg installed. (A new terminal may be needed for it to appear on PATH, but the app locates it automatically.)"
+        # Refresh this session's PATH so the verify step and app can see FFmpeg
+        # without needing a new terminal.
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" +
+                    [System.Environment]::GetEnvironmentVariable("Path", "User")
+        Write-Host "FFmpeg installed."
     } else {
         Write-Host "winget is not available. Please install FFmpeg manually from https://www.gyan.dev/ffmpeg/builds/ and add it to PATH, then re-run." -ForegroundColor Red
         exit 1
